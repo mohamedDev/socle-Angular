@@ -3,11 +3,14 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build",
-    "test": "ng test",
-    "lint": "ng lint",
-    "e2e": "ng e2e"
+    "start": "winpty docker exec -it socle_angular-dev ng serve --poll 1000 --host 0.0.0.0",
+    "build": "winpty docker exec -it socle_angular-dev ng build",
+    "test": "winpty docker exec -it socle_angular-dev ng test",
+    "lint": "winpty docker exec -it socle_angular-dev ng lint",
+    "e2e": "winpty docker exec -it socle_angular-dev ng e2e",
+    "clear" : "rm .env docker-compose.yml Dockerfile entrypoint.sh",
+    "docker-dev": "cp ./infrastructure/env_dev/* ./ && cp ./infrastructure/env_dev/.env ./ && docker-compose up -d --build && npm run clear",
+    "docker-exec": "winpty docker exec -it socle_angular-dev bash"
   },
   "private": true,
   "dependencies": {
@@ -19,6 +22,8 @@
     "@angular/platform-browser": "~8.2.11",
     "@angular/platform-browser-dynamic": "~8.2.11",
     "@angular/router": "~8.2.11",
+    "install": "^0.13.0",
+    "npm": "^6.12.0",
     "rxjs": "~6.4.0",
     "tslib": "^1.10.0",
     "zone.js": "~0.9.1"

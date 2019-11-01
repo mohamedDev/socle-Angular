@@ -1,0 +1,29 @@
+version: '3'
+services:
+  web:
+    image: socle_angular
+    # restart: always
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+      - NODE_VERSION=${NODEJS}
+      - NGCLI_VERSION=${NGCLI}
+    container_name: socle_angular-dev
+    ports:
+      - "80:4200"
+      - "443:443"
+      - "9876:9876"
+    # depends_on:
+    #  - jsonserver
+    volumes:
+      - ./:/app
+      - /usr/src/app/node_modules
+  # jsonserver:
+    # image: jsonserver
+    # restart: always
+    # build: .
+    # container_name: jsonserver_mock-dev
+    # ports:
+    #  - "3000:3000"
+    tty: true
