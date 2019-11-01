@@ -5,6 +5,9 @@ MAINTAINER BOUAZIZ Mohamed <mohamed_bouaziz@hotmail.fr>
 # create arg variable
 ARG NODE_VERSION
 ARG  NGCLI_VERSION
+ARG  HTTP_PORT
+ARG  HTTPS_PORT
+ARG  KARMA_PORT
 
 # create app env variable
 ENV NVM_DIR=/usr/local/nvm
@@ -51,5 +54,5 @@ RUN npm install
 # ADD entrypoint.sh /entrypoint.sh
 # RUN chmod u+x /entrypoint.sh
 
-EXPOSE 4200 443 4202 9876
+EXPOSE $HTTP_PORT $HTTPS_PORT $KARMA_PORT
 # ENTRYPOINT ["/entrypoint.sh"]

@@ -2,18 +2,21 @@ version: '3'
 services:
   web:
     image: socle_angular
-    # restart: always
+    restart: always
     build:
       context: .
       dockerfile: Dockerfile
       args:
       - NODE_VERSION=${NODEJS}
       - NGCLI_VERSION=${NGCLI}
-    container_name: socle_angular-dev
+      - HTTP_PORT=${HTTP_CONTAINER}
+      - HTTPS_PORT=${HTTPS_CONTAINER}
+      - KARMA_PORT=${KARMA_CONTAINER}
+    container_name: ${CONTAINER_NAME}
     ports:
-      - "80:4200"
-      - "443:443"
-      - "9876:9876"
+      - "${HTTP_LOCAL}:${HTTP_CONTAINER}"
+      - "${HTTPS_LOCAL}:${HTTPS_CONTAINER}"
+      - "${KARMA_LOCAL}:${KARMA_CONTAINER}"
     # depends_on:
     #  - jsonserver
     volumes:
