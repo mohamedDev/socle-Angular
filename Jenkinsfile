@@ -1,31 +1,42 @@
 pipeline {
   agent any
   stages {
-    stage('Unit Test') {
+    stage('Build') {
       steps {
-        sh 'mvn clean test'
+        echo 'Hi, GeekFlare. Starting to build the App.'
       }
     }
-    stage('Deploy Standalone') {
+    stage('Test') {
       steps {
-        sh 'mvn deploy -P standalone'
+        input('Do you want to proceed?')
       }
     }
-    stage('Deploy AnyPoint') {
-      environment {
-        ANYPOINT_CREDENTIALS = credentials('anypoint.credentials')
-      }
-      steps {
-        sh 'mvn deploy -P arm -Darm.target.name=local-4.0.0-ee -Danypoint.username=${ANYPOINT_CREDENTIALS_USR}  -Danypoint.password=${ANYPOINT_CREDENTIALS_PSW}'
+    stage('Deploy') {
+      parallel {
+        stage('Deploy start ') {
+          steps {
+            echo "Start the deploy .."
+          }
+        }
+        stage('Deploying now') {
+          agent {
+            docker {
+              reuseNode true
+              image‘ nginx’
+            }
+          }
+
+          steps {
+            echo "Docker Created"
+          }
+        }
       }
     }
-    stage('Deploy CloudHub') {
-      environment {
-        ANYPOINT_CREDENTIALS = credentials('anypoint.credentials')
-      }
+    stage('Prod') {
       steps {
-        sh 'mvn deploy -P cloudhub -Dmule.version=4.0.0 -Danypoint.username=${ANYPOINT_CREDENTIALS_USR} -Danypoint.password=${ANYPOINT_CREDENTIALS_PSW}'
+        echo "App is Prod Ready"
       }
+
     }
   }
 }
